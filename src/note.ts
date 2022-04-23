@@ -27,4 +27,7 @@ export class Note {
   public noteToJson(): string {
     return JSON.stringify({title: this.getTitle(), body: this.getBody(), color: this.getColor()})
   }
+  public printTitle(): void {
+    
+  }
 }
