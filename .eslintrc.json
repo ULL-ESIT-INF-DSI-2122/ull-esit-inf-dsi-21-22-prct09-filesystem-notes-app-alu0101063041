@@ -18,6 +18,7 @@
         "require-jsdoc": "off",
         "max-len": "off",
         "eol-last": "off",
-        "semi": "off"
+        "semi": "off",
+        "valid-jsdoc": "off"
     }
 }
