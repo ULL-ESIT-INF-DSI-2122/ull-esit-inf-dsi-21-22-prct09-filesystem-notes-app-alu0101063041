@@ -24,4 +24,7 @@ export class Note {
   public isSameTitle(title: string): boolean {
     return this.title === title;
   }
+  public noteToJson(): string {
+    return JSON.stringify({title: this.getTitle(), body: this.getBody(), color: this.getColor()})
+  }
 }
