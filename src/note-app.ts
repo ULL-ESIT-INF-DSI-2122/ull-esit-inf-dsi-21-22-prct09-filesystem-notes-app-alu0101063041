@@ -72,9 +72,9 @@ export class NoteApp {
         console.log(chalk.red(`${user} no tiene notas guardadas`))
       } else {
         console.log(chalk.green(`Estas son las notas de ${user}`))
-        this.getNotesUser(user).forEach((note) => {
-          // note.print()
-        })
+        for (const note of this.getNotesUser(user)) {
+          note.printTitle()
+        }
       }
     } else {
       console.log(chalk.red(`el usuario: ${user} no esta en la base de datos`))
@@ -87,4 +87,4 @@ app.addNote('javi', 'prueba', 'esto es una prueba', 'red')
 app.addNote('javi', 'prueba2', 'segunda prueba', 'blue')
 // console.log(app.getNotesUser('javi'))
 console.log(app.getNote('javi', 'prueba2'))
-console.log(app.getNotesUser('javi'))
+app.listNote('javi')
