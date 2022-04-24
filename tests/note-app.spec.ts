@@ -17,7 +17,6 @@ describe('Pruebas clase Note', () => {
   it('Funcion editNote', () => {
     expect(app.editNote('javi', 'prueba', 'Cambiando cositas')).to.be.eq(true)
   })
-
   it('Funcion showNote', () => {
     expect(app.showNote('javi', 'prueba')).to.be.eq(true)
   })
