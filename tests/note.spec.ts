@@ -20,10 +20,6 @@ describe('Pruebas clase Note', () => {
     note1.setTitle(newtitle)
     expect(note1.getTitle()).to.be.eq('Nuevo titulo')
   })
-  it('Funcion isSameTitle', () => {
-    const searchTitle: string = 'Prueba'
-    expect(note1.isSameTitle(searchTitle)).to.be.eq(false)
-  })
   it('Convierte el objeto en un objeto json', () => {
     expect(note1.noteToJson()).to.deep.eq('{"title":"Nuevo titulo","body":"Esto es una prueba","color":"red"}')
   })

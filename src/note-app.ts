@@ -189,12 +189,3 @@ export class NoteApp {
   }
 }
 
-const app = new NoteApp
-app.addNote('javi', 'prueba', 'esto es una prueba', 'red')
-app.addNote('javi', 'prueba2', 'segunda prueba', 'blue')
-// console.log(app.getNotesUser('javi'))
-console.log(app.getNote('javi', 'prueba2'))
-app.listNotes('javi')
-app.showNote('javi', 'prueba')
-app.editNote('javi', 'prueba', 'Cambiando cositas')
-app.showNote('javi', 'prueba')
