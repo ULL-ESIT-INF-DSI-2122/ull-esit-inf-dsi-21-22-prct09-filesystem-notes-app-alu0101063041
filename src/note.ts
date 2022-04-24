@@ -1,4 +1,4 @@
-import chalk = require("chalk");
+import * as chalk from 'chalk'
 
 /**
  * Clase Nota que representa las notas que un usuario puede almacenar
@@ -23,12 +23,10 @@ export class Note {
   public setColor(color: string) {
     this.color = color;
   }
-  public isSameTitle(title: string): boolean {
-    return this.title === title;
-  }
   public noteToJson(): string {
     return JSON.stringify({title: this.getTitle(), body: this.getBody(), color: this.getColor()})
   }
+
   public printTitle(): void {
     switch (this.color) {
       case 'red':
@@ -42,6 +40,9 @@ export class Note {
         break
       case 'grey':
         console.log(chalk.grey(this.getTitle()))
+        break
+      case 'green':
+        console.log(chalk.green(this.getTitle()))
         break
       default:
         console.log(chalk.white(this.getTitle()))
@@ -61,6 +62,9 @@ export class Note {
         break
       case 'grey':
         console.log(chalk.grey(this.getBody()))
+        break
+      case 'green':
+        console.log(chalk.green(this.getBody()))
         break
       default:
         console.log(chalk.white(this.getBody()))

@@ -66,7 +66,7 @@ export class NoteApp {
     return notes
   }
 
-  listNote(user:string) {
+  listNotes(user:string) {
     if (this.checkDir(user)) {
       if (this.getNotesUser(user).length === 0) {
         console.log(chalk.red(`${user} no tiene notas guardadas`))
@@ -80,6 +80,41 @@ export class NoteApp {
       console.log(chalk.red(`el usuario: ${user} no esta en la base de datos`))
     }
   }
+  showNote(user:string, title: string): boolean {
+    if (this.checkDir(user)) {
+      if (this.checkFile(user, title)) {
+        const temp = this.getNote(user, title)
+        const aux: Note = new Note(temp.title, temp.body, temp.color)
+        aux.printTitle()
+        aux.printBody()
+        return true
+      } else {
+        console.log(chalk.red(`El usuario ${user} no tiene una nota con el titulo ${title}`))
+        return false
+      }
+    } else {
+      console.log(chalk.red(`El usuario ${user} no se encuentra en la base de datos`))
+      return false
+    }
+  }
+  editNote(user: string, title: string, body: string): boolean {
+    if (this.checkDir(user)) {
+      if (this.checkFile(user, title)) {
+        const temp = this.getNote(user, title)
+        const aux: Note = new Note(temp.title, temp.body, temp.color)
+        aux.setBody(body)
+        fs.writeFileSync(this.getFilePath(user, title), aux.noteToJson())
+        console.log(chalk.green(`Nota editada!`))
+        return true
+      } else {
+        console.log(chalk.red(`El usuario ${user} no tiene una nota con el titulo ${title}`))
+        return false
+      }
+    } else {
+      console.log(chalk.red(`El usuario ${user} no se encuentra en la base de datos`))
+      return false
+    }
+  }
 }
 
 const app = new NoteApp
@@ -87,4 +122,7 @@ app.addNote('javi', 'prueba', 'esto es una prueba', 'red')
 app.addNote('javi', 'prueba2', 'segunda prueba', 'blue')
 // console.log(app.getNotesUser('javi'))
 console.log(app.getNote('javi', 'prueba2'))
-app.listNote('javi')
+app.listNotes('javi')
+app.showNote('javi', 'prueba')
+app.editNote('javi', 'prueba', 'Cambiando cositas')
+app.showNote('javi', 'prueba')

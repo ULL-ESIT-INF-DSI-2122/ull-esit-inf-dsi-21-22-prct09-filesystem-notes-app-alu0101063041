@@ -7,7 +7,7 @@
   "strict": true,
   },
   "exclude": [
-    "../**/*.spec.ts",
+    "./tests/*.spec.ts",
     "./node_modules",
     "./dist"
   ]
