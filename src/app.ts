@@ -2,7 +2,6 @@
 import * as yargs from 'yargs'
 import {NoteApp} from './note-app';
 import * as chalk from 'chalk'
-import { demandOption } from 'yargs';
 
 const app = new NoteApp
 /**
@@ -118,7 +117,7 @@ yargs.command({
 /**
  * Edita el contenido de una nota
  */
- yargs.command({
+yargs.command({
   command: 'remove',
   describe: 'Elimina una nota',
   builder: {
@@ -147,4 +146,5 @@ yargs.command({
     }
   },
 })
+
 yargs.parse()
