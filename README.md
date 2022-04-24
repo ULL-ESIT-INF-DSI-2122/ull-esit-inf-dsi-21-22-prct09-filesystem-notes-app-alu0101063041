@@ -114,17 +114,22 @@ export class NoteApp {
   ~~~
   private database_path: string = '/home/usuario/practicas/ull-esit-inf-dsi-21-22-prct09-filesystem-notes-app-alu0101063041/database'
   ~~~
-
+  ~~~
   constructor() {}
-~~~
+  ~~~
+  Devuelve la ruta de almacenamiento de notas de un usuario 
+  ~~~
   getPathUser(user: string): string {
     return this.database_path + '/' + user
   }
-
+  Devuelve la ruta de un fichero JSON almacenado en la base de datos
+  ~~~
   getFilePath(user: string, title: string): string {
     return this.getPathUser(user) + '/' + title + '.json'
   }
-
+  ~~~
+  Crea un nuevo directorio para almacenar notas si no existe
+  ~~~
   createNewDir(user: string) {
     if (!this.checkDir(user)) {
       fs.mkdirSync(this.getPathUser(user))
@@ -133,15 +138,19 @@ export class NoteApp {
       // console.log(chalk.white(`${user} ya tiene un directorio`))
     }
   }
-
+  ~~~
+  
+  La primera comprueba que el directorio de un usuario se encuentra en la base de datos y la segunda comprueba si existe el fichero
+  ~~~
   checkDir(user: string): boolean {
     return fs.existsSync(this.getPathUser(user))
   }
-
   checkFile(user: string, title: string): boolean {
     return fs.existsSync(this.getFilePath(user, title))
   }
-
+  ~~~
+  Especificando un usuario, un titulo, un contenido y un color. Comprueba si la ruta existe, si no crea el directorio, crea un objeto nota con los atributos (title, body, color) y luego se añade a la base de datos si no existe una con el mismo titulo
+  ~~~
   addNote(user: string, title: string, body: string, color: string): boolean {
     this.createNewDir(user)
     const newNote: Note = new Note(title, body, color)
@@ -154,7 +163,9 @@ export class NoteApp {
       return false
     }
   }
-
+  ~~~
+  Especificando un usuario y un titulo elimina la nota con el titulo que recibe como parametro, comprando primero si existe la ruta del usuario y si existe el fichero en la ruta
+  ~~~
   removeNote(user: string, title: string): boolean {
     if (!this.checkFile(user, title)) {
       console.log(chalk.red(`La nota con titulo ${title} no esta en la base de datos`))
@@ -165,12 +176,16 @@ export class NoteApp {
       return true
     }
   }
-
+  ~~~
+  Obtiene una nota de la base de datos especifados en los parametros que se pasan a la funcion
+  ~~~
   getNote(user:string, title:string) {
     const note = JSON.parse(fs.readFileSync(`${this.getPathUser(user)}/${title}.json`, 'utf-8'))
     return note
   }
-
+  ~~~
+  Obtiene un array con todas las notas de un usuario concreto, primero accede a la base de datos y luego lee todas las notas convierto el JSON en un objeto de la clase Note
+  ~~~
   getNotesUser(user:string):Note[] {
     const titles = fs.readdirSync(this.getPathUser(user))
     const notes: Note[] = []
@@ -181,7 +196,9 @@ export class NoteApp {
     })
     return notes
   }
-
+~~~
+ListNotes muestra la lista de notas que posee un usuario
+~~~
   listNotes(user:string):boolean {
     if (this.checkDir(user)) {
       if (this.getNotesUser(user).length === 0) {
@@ -199,7 +216,9 @@ export class NoteApp {
       return false
     }
   }
-
+~~~
+Esta funcion muestra el titulo y el contenido de una nota cuyos parametros son pasados a la funcion. Se comprueba la existencia del directorio y de la nota antes de mostrar
+~~~
   showNote(user:string, title: string): boolean {
     if (this.checkDir(user)) {
       if (this.checkFile(user, title)) {
@@ -217,7 +236,9 @@ export class NoteApp {
       return false
     }
   }
-
+~~~
+EditNote edita el contenido de una nota, es deicr, el body. De igual manera que las anteriores, se comprueba la existencia del directorio y de la nota en cuestion.
+~~~
   editNote(user: string, title: string, body: string): boolean {
     if (this.checkDir(user)) {
       if (this.checkFile(user, title)) {
