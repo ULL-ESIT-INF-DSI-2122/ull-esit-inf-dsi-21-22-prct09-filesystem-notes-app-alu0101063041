@@ -118,8 +118,8 @@ yargs.command({
  * Edita el contenido de una nota
  */
 yargs.command({
-  command: 'remove',
-  describe: 'Elimina una nota',
+  command: 'edit',
+  describe: 'Edita una nota',
   builder: {
     user: {
       describe: 'Nombre de usuario',

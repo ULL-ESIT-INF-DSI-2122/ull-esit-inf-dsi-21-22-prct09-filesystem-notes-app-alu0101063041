@@ -283,3 +283,223 @@ EditNote edita el contenido de una nota, es deicr, el body. De igual manera que 
   }
 }
 ~~~
+
+## Pruebas NoteApp y Note
+
+~~~
+describe('Pruebas clase Note', () => {
+  const note1: Note = new Note('Prueba', 'Esto es una prueba', 'red')
+  it('Es una instancia de la clase Note', () => {
+    expect(note1).to.be.instanceOf(Note)
+  });
+  it('Funcion getTittle', () => {
+    expect(note1.getTitle()).to.be.eq('Prueba')
+  })
+  it('Funcion getBody', () => {
+    expect(note1.getBody()).to.be.eq('Esto es una prueba')
+  })
+  it('Funcion getColor', () => {
+    expect(note1.getColor()).to.be.eq('red')
+  })
+  it('Funcion setTitle', () => {
+    const newtitle: string = 'Nuevo titulo'
+    note1.setTitle(newtitle)
+    expect(note1.getTitle()).to.be.eq('Nuevo titulo')
+  })
+  it('Convierte el objeto en un objeto json', () => {
+    expect(note1.noteToJson()).to.deep.eq('{"title":"Nuevo titulo","body":"Esto es una prueba","color":"red"}')
+  })
+});
+~~~
+
+~~~
+import 'mocha';
+import {expect} from 'chai';
+import {NoteApp} from '../src/note-app'
+
+const app = new NoteApp
+describe('Pruebas clase Note', () => {
+  it('Funcion removeNote', ()=> {
+    expect(app.removeNote('javi', 'prueba3')).to.be.eq(true)
+  })
+  it('Funcion addNote', () => {
+    expect(app.addNote('javi', 'prueba3', 'eee', 'grey')).to.be.eq(true)
+  })
+  it('Funcion listNotes', ()=> {
+    expect(app.listNotes('javi')).to.be.eq(true)
+    expect(app.listNotes('yepp')).to.be.eq(false)
+  })
+  it('Funcion editNote', () => {
+    expect(app.editNote('javi', 'prueba', 'Cambiando cositas')).to.be.eq(true)
+  })
+  it('Funcion showNote', () => {
+    expect(app.showNote('javi', 'prueba')).to.be.eq(true)
+  })
+})
+~~~
+
+## Fichero app.ts
+
+Este fichero contiene las funciones que nos permitiran ejecturar nuestra aplicacion de notas mediate comandos. Para ello usamos la liberia yargs.
+
+~~~
+import * as yargs from 'yargs'
+~~~
+
+Añade una funcion si los parametros que se le pasan son correctos
+~~~
+yargs.command({
+  command: 'add',
+  describe: 'Añade una nueva nota',
+  builder: {
+    user: {
+      describe: 'Nombre de usuario',
+      demandOption: true,
+      type: 'string',
+    },
+    title: {
+      describe: 'Titulo de la nota',
+      demandOption: true,
+      type: 'string',
+    },
+    body: {
+      describe: 'Contenido de la nota',
+      demandOption: true,
+      type: 'string',
+    },
+    color: {
+      describe: 'Color de la nota',
+      demandOption: true,
+      type: 'string',
+    },
+  },
+  handler(argv) {
+    if ((typeof argv.user == 'string') && (typeof argv.title == 'string') &&
+        (typeof argv.body == 'string') && (typeof argv.color == 'string')) {
+      app.addNote(argv.user, argv.title, argv.body, argv.color)
+    } else {
+      console.log(chalk.red('ERROR! Parametros incorrectos'))
+    }
+  },
+})
+~~~
+Elimina una nota 
+~~~
+yargs.command({
+  command: 'remove',
+  describe: 'Elimina una nota',
+  builder: {
+    user: {
+      describe: 'Nombre de usuario',
+      demandOption: true,
+      type: 'string',
+    },
+    title: {
+      describe: 'Titulo de la nota',
+      demandOption: true,
+      type: 'string',
+    },
+  },
+  handler(argv) {
+    if ((typeof argv.user == 'string') && (typeof argv.title == 'string')) {
+      app.removeNote(argv.user, argv.title)
+    } else {
+      console.log(chalk.red('ERROR! Parametros incorrectos'))
+    }
+  },
+})
+~~~
+
+Muestra los titulos de las notas de un usuario
+~~~
+yargs.command({
+  command: 'list',
+  describe: 'Muestra los titulos de las notas de un usuario',
+  builder: {
+    user: {
+      describe: 'Nombre de usuario',
+      demandOption: true,
+      type: 'string',
+    },
+  },
+  handler(argv) {
+    if (typeof argv.user == 'string') {
+      app.listNotes(argv.user)
+    } else {
+      console.log(chalk.red('ERROR! Parametros incorrectos'))
+    }
+  },
+})
+~~~
+Muestra el contenido de una nota
+~~~
+yargs.command({
+  command: 'show',
+  describe: 'Muestra el contenido de una nota',
+  builder: {
+    user: {
+      describe: 'Nombre de usuario',
+      demandOption: true,
+      type: 'string',
+    },
+    title: {
+      describe: 'Titulo de la nota',
+      demandOption: true,
+      type: 'string',
+    },
+  },
+  handler(argv) {
+    if ((typeof argv.user == 'string') && (typeof argv.title == 'string')) {
+      app.showNote(argv.user, argv.title)
+    } else {
+      console.log(chalk.red('ERROR! Parametros incorrectos'))
+    }
+  },
+})
+~~~
+Elimina una nota
+~~~
+yargs.command({
+  command: 'edit',
+  describe: 'Edita una nota',
+  builder: {
+    user: {
+      describe: 'Nombre de usuario',
+      demandOption: true,
+      type: 'string',
+    },
+    title: {
+      describe: 'Titulo de la nota',
+      demandOption: true,
+      type: 'string',
+    },
+    body: {
+      describe: 'Nuevo contenido de la nota',
+      demandOption: true,
+      type: 'string',
+    },
+  },
+  handler(argv) {
+    if ((typeof argv.user == 'string') && (typeof argv.title == 'string') &&
+        (typeof argv.body == 'string')) {
+      app.editNote(argv.user, argv.title, argv.body)
+    } else {
+      console.log(chalk.red('ERROR! Parametros incorrectos'))
+    }
+  },
+})
+~~~
+
+## Caputuras
+
+Estas son algunas capturas con diferentes salidas que produce la aplicacion
+
+![](./capturas/Captura%20de%20pantalla%20de%202022-04-24%2021-09-23.png)
+![](./capturas/Captura%20de%20pantalla%20de%202022-04-24%2021-13-02.png)
+![](./capturas/Captura%20de%20pantalla%20de%202022-04-24%2021-13-33.png)
+![](./capturas/Captura%20de%20pantalla%20de%202022-04-24%2021-13-33.png)
+![](./capturas/Captura%20de%20pantalla%20de%202022-04-24%2021-15-27.png)
+
+
+## Workflows
+
