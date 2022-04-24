@@ -108,10 +108,13 @@ Cuando hablamos de funciones sincronas nos referimos a que cada una de ellas rea
 
 ~~~
 export class NoteApp {
+~~~
+
   Esta ruta que he guardado en una variable privada indica la ruta o path donde estaran contenidas los diferentes directorios para cada usuario y sera la base para movernos entre los mismos y acceder a las notas
   ~~~
   private database_path: string = '/home/usuario/practicas/ull-esit-inf-dsi-21-22-prct09-filesystem-notes-app-alu0101063041/database'
   ~~~
+
   constructor() {}
 ~~~
   getPathUser(user: string): string {
